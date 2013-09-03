@@ -1,10 +1,10 @@
 package src.pathfinder.display.swing;
 
-import src.pathfinder.impl.Pathfinder;
 import src.pathfinder.core.util.GameRegion;
 import src.pathfinder.core.util.Structure;
 import src.pathfinder.core.wrapper.PathNode;
 import src.pathfinder.core.wrapper.TilePath;
+import src.pathfinder.impl.Pathfinder;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -96,7 +96,6 @@ public class DisplayPane extends JPanel {
                 }
             }
         }
-
         if (prevClick != -1) {
             Point p = toPixel(prevClick);
             g.setColor(Color.RED);
@@ -109,7 +108,6 @@ public class DisplayPane extends JPanel {
                 g.drawRect(p.x - 1, p.y - 1, 2, 2);
             }
         }
-
     }
 
 

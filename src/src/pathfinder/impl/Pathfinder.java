@@ -7,7 +7,9 @@ import src.pathfinder.core.util.WalkDirection;
 import src.pathfinder.core.wrapper.PathNode;
 import src.pathfinder.core.wrapper.TilePath;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.logging.Logger;
 
 /**
@@ -20,11 +22,15 @@ public class Pathfinder {
     private final Heuristic.HeuristicAlgorithm heuristic;
 
     public Pathfinder(final Heuristic.HeuristicAlgorithm heuristic) {
-        this.heuristic = (heuristic == null) ? Heuristic.MANHATTAN.getAlgorithm() : heuristic;
+        this.heuristic = heuristic;
+    }
+
+    public Pathfinder(final Heuristic heuristic) {
+        this(heuristic.getAlgorithm());
     }
 
     public Pathfinder() {
-        this(null);
+        this(Heuristic.MANHATTAN);
     }
 
     public TilePath findPath(final int tileA, final int tileB, final long maxTime, final EndCondition endCondition, final boolean returnNextBest) {
@@ -99,7 +105,7 @@ public class Pathfinder {
     protected PathNode get(final int tile, final int target, final HashMap<Integer, PathNode> map) {
         PathNode node = map.get(tile);
         if (node == null) {
-            map.put(tile, node = new PathNode(tile,heuristic.getCost(tile, target)));
+            map.put(tile, node = new PathNode(tile, heuristic.getCost(tile, target)));
         }
         return node;
     }

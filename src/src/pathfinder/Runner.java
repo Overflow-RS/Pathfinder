@@ -18,7 +18,7 @@ public class Runner {
             @Override
             public void run() {
                 final Pathfinder pathfinder = new Pathfinder();
-                int iterations = 100;
+                int iterations = 10;
                 int pathLength = Integer.MAX_VALUE;
                 long best = Long.MAX_VALUE;
                 long worst = Long.MIN_VALUE;
