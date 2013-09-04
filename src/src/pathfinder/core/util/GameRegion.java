@@ -1,8 +1,8 @@
 package src.pathfinder.core.util;
 
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.ByteBuffer;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -144,7 +144,6 @@ public class GameRegion {
         }
         Logger.getGlobal().info("[Pathfinder] Updating map data");
         updateFiles();
-        Logger.getGlobal().info("[Pathfinder] Map data updated");
     }
 
     private static void writeFile(final int bufferSize, final InputStream inputStream, final OutputStream outputStream) throws IOException {
@@ -157,10 +156,9 @@ public class GameRegion {
 
     private static void updateFiles() {
         try {
-            URLConnection connection = new URL(DOWNLOAD_URL).openConnection();
-            connection.setRequestProperty("Connection", "close");
-            connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0");
-           try (InputStream inputStream = connection.getInputStream(); OutputStream outputStream = new FileOutputStream(ZIPPED)) {
+            HttpURLConnection connection = (HttpURLConnection) new URL(DOWNLOAD_URL).openConnection();
+            connection.addRequestProperty("Connection", "close");
+            try (InputStream inputStream = connection.getInputStream(); OutputStream outputStream = new FileOutputStream(ZIPPED)) {
                 writeFile(1024, inputStream, outputStream);
             }
             try (ZipFile file = new ZipFile(ZIPPED)) {
@@ -172,9 +170,12 @@ public class GameRegion {
                     }
                 }
             }
+            connection.disconnect();
+            Logger.getGlobal().info("[Pathfinder] Map data updated");
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+            Logger.getGlobal().info("[Pathfinder] Map data update failed");
+        } finally {
             ZIPPED.delete();
         }
     }
