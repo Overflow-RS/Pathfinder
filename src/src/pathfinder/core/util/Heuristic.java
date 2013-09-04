@@ -15,7 +15,7 @@ public enum Heuristic {
     DIAGONAL(new HeuristicAlgorithm() {
         @Override
         public double getCost(int a, int b) {
-            return Math.min(Math.abs(Structure.TILE.getX(a) - Structure.TILE.getX(b)), Math.abs(Structure.TILE.getY(a) - Structure.TILE.getY(b)));
+            return Math.max(Math.abs(Structure.TILE.getX(a) - Structure.TILE.getX(b)), Math.abs(Structure.TILE.getY(a) - Structure.TILE.getY(b)));
         }
     }),
     ABSOULTE(new HeuristicAlgorithm() {
