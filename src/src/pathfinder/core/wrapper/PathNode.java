@@ -13,7 +13,7 @@ public class PathNode implements Comparable<PathNode> {
     private boolean expanded;
 
     private PathNode parent;
-    private boolean door = false;
+    private boolean object = false;
     private double currentCost;
     private double totalCost;
 
@@ -22,10 +22,10 @@ public class PathNode implements Comparable<PathNode> {
         this.heuristicCost = heuristicCost;
     }
 
-    public void examineNode(final PathNode pathNode, final boolean door) {
+    public void examineNode(final PathNode pathNode, final boolean object) {
         if (parent == null || currentCost > pathNode.currentCost) {
             this.parent = pathNode;
-            this.door = door;
+            this.object = object;
             this.currentCost = parent.currentCost + 1;
             this.totalCost = heuristicCost + currentCost;
         }
@@ -39,8 +39,8 @@ public class PathNode implements Comparable<PathNode> {
         return hash;
     }
 
-    public boolean isDoor() {
-        return door;
+    public boolean isObject() {
+        return object;
     }
 
     public boolean isExpanded() {

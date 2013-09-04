@@ -13,12 +13,11 @@ import java.text.DecimalFormat;
  */
 public class Runner {
     public static void main(final String... args) {
-        //Logger.getGlobal().setLevel(Level.INFO);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 final Pathfinder pathfinder = new Pathfinder();
-                int iterations = 10;
+                int iterations = 100;
                 int pathLength = Integer.MAX_VALUE;
                 long best = Long.MAX_VALUE;
                 long worst = Long.MIN_VALUE;
@@ -31,7 +30,7 @@ public class Runner {
                     l += path.getTimeTook();
                 }
                 DecimalFormat format = new DecimalFormat("#.##");
-                System.out.println("Finding a path of length "+pathLength+"\nIterations: " + iterations + "\n - Best: " + best + " ms\n - Worst: " + worst + " ms\n - Average: " + (format.format(l / iterations)+" ms"));
+                System.out.println("Finding a path of length " + pathLength + "\nIterations: " + iterations + "\n - Best: " + best + " ms\n - Worst: " + worst + " ms\n - Average: " + (format.format(l / iterations) + " ms"));
             }
         }).start();
     }

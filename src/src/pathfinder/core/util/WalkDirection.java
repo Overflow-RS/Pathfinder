@@ -18,13 +18,13 @@ public enum WalkDirection {
     private final int offsetX;
     private final int offsetY;
     private final int canWalkFlag;
-    private final int doorFlag;
+    private final int passableObjectFlag;
 
-    private WalkDirection(final int offsetX, final int offsetY, final int canWalkFlag, final int doorFlag) {
+    private WalkDirection(final int offsetX, final int offsetY, final int canWalkFlag, final int passableObjectFlag) {
         this.offsetX = offsetX;
         this.offsetY = offsetY;
         this.canWalkFlag = canWalkFlag;
-        this.doorFlag = doorFlag;
+        this.passableObjectFlag = passableObjectFlag;
     }
 
     private WalkDirection(final int offsetX, final int offsetY, int canWalkFlag) {
@@ -40,10 +40,10 @@ public enum WalkDirection {
     }
 
     public WalkType getWalkType(final int flag) {
-        return ((flag & 256) == 256) ? WalkType.FAIL : (flag & canWalkFlag) == canWalkFlag ? WalkType.WALK : (flag & doorFlag) == doorFlag ? WalkType.DOOR : WalkType.FAIL;
+        return ((flag & 256) == 256) ? WalkType.FAIL : (flag & canWalkFlag) == canWalkFlag ? WalkType.WALK : (flag & passableObjectFlag) == passableObjectFlag ? WalkType.OBJECT : WalkType.FAIL;
     }
 
     public enum WalkType {
-        FAIL, WALK, DOOR
+        FAIL, WALK, OBJECT
     }
 }

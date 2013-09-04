@@ -23,6 +23,7 @@ public class Pathfinder {
 
     public Pathfinder(final Heuristic.HeuristicAlgorithm heuristic) {
         this.heuristic = heuristic;
+        GameRegion.init();
     }
 
     public Pathfinder(final Heuristic heuristic) {
@@ -50,7 +51,7 @@ public class Pathfinder {
                 continue;
             }
             if (endCondition.acceptCurrent(tileB, current)) {
-                Logger.getGlobal().info("[Pathfinder] Found Path > Took: " + (System.currentTimeMillis() - startTime) + "ms > Expanded Vertex's: " + nodeMap.size());
+                Logger.getGlobal().config("[Pathfinder] Found Path > Took: " + (System.currentTimeMillis() - startTime) + "ms > Expanded Vertex's: " + nodeMap.size());
                 return resolvePath(tileA, tileB, (int) (System.currentTimeMillis() - startTime), current);
             } else {
                 if (returnNextBest && (best == null || current.getHeuristicCost() < best.getHeuristicCost())) {
@@ -65,10 +66,10 @@ public class Pathfinder {
             }
         }
         if (returnNextBest && best != null) {
-            Logger.getGlobal().info("[Pathfinder] Sub-Optimal Path found > Took: " + (System.currentTimeMillis() - startTime) + "ms > Expanded Vertex's: " + nodeMap.size());
+            Logger.getGlobal().config("[Pathfinder] Sub-Optimal Path found > Took: " + (System.currentTimeMillis() - startTime) + "ms > Expanded Vertex's: " + nodeMap.size());
             return resolvePath(tileA, tileB, (int) (System.currentTimeMillis() - startTime), best);
         }
-        Logger.getGlobal().info(
+        Logger.getGlobal().config(
                 "[Pathfinder] Failed To Find A Path > Took: " + (System.currentTimeMillis() - startTime) + "ms > Expanded Vertex's: " + nodeMap.size());
         return null;
     }
@@ -88,7 +89,7 @@ public class Pathfinder {
                     node = get(Structure.TILE.getHash(x + direction.getOffsetX(), y + direction.getOffsetY(), z), target, map);
                     node.examineNode(current, false);
                     break;
-                case DOOR:
+                case OBJECT:
                     node = get(Structure.TILE.getHash(x + direction.getOffsetX(), y + direction.getOffsetY(), z), target, map);
                     node.examineNode(current, true);
                     break;
@@ -119,7 +120,7 @@ public class Pathfinder {
                 break;
             }
         }
-        Logger.getGlobal().info("[Pathfinder] Path Length: " + path.size());
+        Logger.getLogger("Pathfinder").config("[Pathfinder] Path Length: " + path.size());
         return path;
     }
 
@@ -134,4 +135,5 @@ public class Pathfinder {
             return target == current.getHash();
         }
     };
+
 }
