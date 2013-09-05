@@ -118,9 +118,11 @@ public class GameRegion {
         return r;
     }
 
-    public static synchronized void init() {
+    public static synchronized boolean init() {
         if (!loaded) {
-            checkFiles();
+            if (!checkFiles() && !updateFiles()) {
+                return false;
+            }
             try (final FileInputStream indexStream = new FileInputStream(INDEX)) {
                 byte[] bytes = new byte[12];
                 while (indexStream.read(bytes) != -1) {
@@ -130,20 +132,15 @@ public class GameRegion {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                return false;
             }
             loaded = true;
         }
+        return true;
     }
 
-    private static void checkFiles() {
-        if (!DIRECTORY.exists()) {
-            DIRECTORY.mkdir();
-        }
-        if (INDEX.exists() && DATA.exists()) {
-            return;
-        }
-        Logger.getGlobal().info("[Pathfinder] Updating map data");
-        updateFiles();
+    private static boolean checkFiles() {
+        return (DIRECTORY.exists() || DIRECTORY.mkdir()) && (INDEX.exists() && DATA.exists());
     }
 
     private static void writeFile(final int bufferSize, final InputStream inputStream, final OutputStream outputStream) throws IOException {
@@ -154,12 +151,15 @@ public class GameRegion {
         }
     }
 
-    private static void updateFiles() {
+    private static boolean updateFiles() {
         try {
+            Logger.getGlobal().info("[Pathfinder] Updating map data");
             HttpURLConnection connection = (HttpURLConnection) new URL(DOWNLOAD_URL).openConnection();
             connection.addRequestProperty("Connection", "close");
             try (InputStream inputStream = connection.getInputStream(); OutputStream outputStream = new FileOutputStream(ZIPPED)) {
                 writeFile(1024, inputStream, outputStream);
+            } finally {
+                connection.disconnect();
             }
             try (ZipFile file = new ZipFile(ZIPPED)) {
                 Enumeration<? extends ZipEntry> enumeration = file.entries();
@@ -170,14 +170,15 @@ public class GameRegion {
                     }
                 }
             }
-            connection.disconnect();
             Logger.getGlobal().info("[Pathfinder] Map data updated");
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
             Logger.getGlobal().info("[Pathfinder] Map data update failed");
         } finally {
             ZIPPED.delete();
         }
+        return false;
     }
 
     private static class RegionData {

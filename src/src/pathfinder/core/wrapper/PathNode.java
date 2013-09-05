@@ -1,5 +1,9 @@
 package src.pathfinder.core.wrapper;
 
+import src.pathfinder.core.util.Structure;
+
+import java.lang.ref.SoftReference;
+
 /**
  * Author: Tom
  * Date: 03/09/13
@@ -9,6 +13,8 @@ public class PathNode implements Comparable<PathNode> {
 
     private final int hash;
     private final double heuristicCost;
+
+    private SoftReference<String> name;
 
     private boolean expanded;
 
@@ -72,5 +78,9 @@ public class PathNode implements Comparable<PathNode> {
     @Override
     public int hashCode() {
         return hash;
+    }
+
+    public String toString() {
+        return name == null ? (name = new SoftReference<>("PathNode(" + Structure.TILE.getX(hash) + "," + Structure.TILE.getY(hash) + "," + Structure.TILE.getZ(hash) + "," + object+")")).get() : name.get();
     }
 }

@@ -23,7 +23,6 @@ public class Pathfinder {
 
     public Pathfinder(final Heuristic.HeuristicAlgorithm heuristic) {
         this.heuristic = heuristic;
-        GameRegion.init();
     }
 
     public Pathfinder(final Heuristic heuristic) {
@@ -35,6 +34,10 @@ public class Pathfinder {
     }
 
     public TilePath findPath(final int tileA, final int tileB, final long maxTime, final EndCondition endCondition, final boolean returnNextBest) {
+        if (!GameRegion.init()) {
+            Logger.getGlobal().config("[Pathfinder] Unable to find path due to error loading map data");
+            return null;
+        }
         final HashMap<Integer, PathNode> nodeMap = new HashMap<>();
         final PriorityQueue<PathNode> openList = new PriorityQueue<>();
         openList.add(get(tileA, tileB, nodeMap));

@@ -24,6 +24,10 @@ public class Runner {
                 long l = 0;
                 for (int i = 0; i < iterations; i++) {
                     TilePath path = pathfinder.findPath(Structure.TILE.getHash(3186, 3437, 0), Structure.TILE.getHash(3237, 3160, 0), 500, false);
+                    if (path == null) {
+                        i--;
+                        continue;
+                    }
                     pathLength = Math.min(path.size(), pathLength);
                     best = Math.min(path.getTimeTook(), best);
                     worst = Math.max(path.getTimeTook(), worst);
