@@ -55,7 +55,7 @@ public class DisplayPane extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        for (GameRegion region : new LinkedList<>(GameRegion.getLoaded())) {
+        for (GameRegion region : new LinkedList<GameRegion>(GameRegion.getLoaded())) {
             for (int tx = 0; tx < 64; tx++) {
                 for (int ty = 0; ty < 64; ty++) {
                     Point point = toPixel(Structure.TILE.getHash(region.getBaseX() + tx, region.getBaseY() + ty, 0));
@@ -117,9 +117,9 @@ public class DisplayPane extends JPanel {
     public static final int WALK_SOUTH_EAST = 8;
     public static final int WALK_SOUTH = 16;
     public static final int WALK_SOUTH_WEST = 32;
-    public static final int WALK_WEST = 0b1000000;
-    public static final int WALK_NORTH_WEST = 0b10000000;
-    public static final int UNWALKABLE = 0b100000000;
+    public static final int WALK_WEST = 64;
+    public static final int WALK_NORTH_WEST = 128;
+    public static final int UNWALKABLE = 256;
     public static final int DOOR_NORTH = 512;
     public static final int DOOR_EAST = 1024;
     public static final int DOOR_SOUTH = 2048;

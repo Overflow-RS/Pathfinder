@@ -1,5 +1,10 @@
 package src.pathfinder.core.wrapper;
 
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.wrappers.Tile;
+import src.pathfinder.core.util.Structure;
+
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**

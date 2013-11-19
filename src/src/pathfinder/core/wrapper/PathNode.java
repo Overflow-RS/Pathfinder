@@ -14,7 +14,7 @@ public class PathNode implements Comparable<PathNode> {
     private final int hash;
     private final double heuristicCost;
 
-    private SoftReference<String> name;
+    private SoftReference<String> nameContainer;
 
     private boolean expanded;
 
@@ -81,6 +81,7 @@ public class PathNode implements Comparable<PathNode> {
     }
 
     public String toString() {
-        return name == null ? (name = new SoftReference<>("PathNode(" + Structure.TILE.getX(hash) + "," + Structure.TILE.getY(hash) + "," + Structure.TILE.getZ(hash) + "," + object+")")).get() : name.get();
+        final String name = this.nameContainer.get();
+        return name == null ? (this.nameContainer = new SoftReference<String>("PathNode(" + Structure.TILE.getX(hash) + "," + Structure.TILE.getY(hash) + "," + Structure.TILE.getZ(hash) + "," + object + ")")).get() : name;
     }
 }

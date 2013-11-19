@@ -38,8 +38,8 @@ public class Pathfinder {
             Logger.getGlobal().config("[Pathfinder] Unable to find path due to error loading map data");
             return null;
         }
-        final HashMap<Integer, PathNode> nodeMap = new HashMap<>();
-        final PriorityQueue<PathNode> openList = new PriorityQueue<>();
+        final HashMap<Integer, PathNode> nodeMap = new HashMap<Integer,PathNode>();
+        final PriorityQueue<PathNode> openList = new PriorityQueue<PathNode>();
         openList.add(get(tileA, tileB, nodeMap));
         final long startTime = System.currentTimeMillis();
         final long endTime = (startTime + maxTime);
@@ -82,7 +82,7 @@ public class Pathfinder {
     }
 
     protected LinkedList<PathNode> getValidMoves(final PathNode current, final int target, final HashMap<Integer, PathNode> map) {
-        final LinkedList<PathNode> validMoves = new LinkedList<>();
+        final LinkedList<PathNode> validMoves = new LinkedList<PathNode>();
         final int x = Structure.TILE.getX(current.getHash()), y = Structure.TILE.getY(current.getHash()), z = Structure.TILE.getZ(current.getHash());
         final int flag = GameRegion.getFlag(x, y, z);
         for (WalkDirection direction : directions) {
